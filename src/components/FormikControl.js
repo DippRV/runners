@@ -1,15 +1,18 @@
 import React from 'react';
-import Input from "./Input";
-import Select from "./Select";
-import RadioButtons from "./RadioButtons";
-import CheckboxGroup from "./CheckboxGroup";
-import DatePicker from "./DatePicker";
+import Input from "./form/Input";
+import Select from "./form/Select";
+import RadioButtons from "./form/RadioButtons";
+import CheckboxGroup from "./form/CheckboxGroup";
+import DatePicker from "./form/DatePicker";
+import InputWithMask from "./form/InputWithMask";
 
 const FormikControl = (props) => {
     const {control, ...rest} = props;
     switch (control) {
         case 'input':
             return <Input {...rest} />
+        case 'inputmask':
+            return <InputWithMask {...rest} />
         case 'select':
             return <Select {...rest} />
         case 'radio':

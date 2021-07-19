@@ -1,9 +1,9 @@
-import AddUserForm from './AddUserForm/AddUserForm'
 import UserTable from "./UserTable/UserTable";
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import UserTablePagination from './UserTablePagination/UserTablePagination';
 import FilterForm from './FilterForm/FilterForm';
+import AddUserFormikContainer from "./components/AddUserFormikContainer";
 
 
 
@@ -22,7 +22,6 @@ function App() {
             setUsers(() => [...resp.data]);
         });
     }, []);
-    const p = 3;
 
 
 
@@ -46,7 +45,7 @@ function App() {
 
     return (
         <div className="container">
-            <AddUserForm AddUser={AddUser} />
+            <AddUserFormikContainer AddUser={AddUser} />
             <FilterForm FilterData={FilterData}/>
             <UserTable Users={displayUsers} />
             <UserTablePagination changePage={changePage} pageCount={pageCount}/>

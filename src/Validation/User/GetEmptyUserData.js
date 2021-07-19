@@ -4,7 +4,7 @@ const GetEmptyUserData = () =>  {
             email: '',
             date: '',
             phone: '',
-            distance: 0,
+            distance: '',
             payment: ''
         };
 };
