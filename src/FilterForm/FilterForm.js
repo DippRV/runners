@@ -1,8 +1,8 @@
 import {Formik, Field, Form, ErrorMessage} from 'formik';
-import GetEmptyUserFilterData from "../Validation/UserFilter/GetEmptyUserFilterData";
-import UserFilterSchema from "../Validation/UserFilter/UserFilterSchema";
-import TextError from "../Validation/TextError/TextError";
-import './FilterForm.scss'
+import GetEmptyUserFilterData from "../components/FilterUserFormikContainer/GetEmptyUserFilterData";
+import UserFilterSchema from "../components/FilterUserFormikContainer/UserFilterSchema";
+import TextError from "../components/TextError/TextError";
+import '../components/FilterUserFormikContainer/FilterForm.scss'
 
 const FilterForm = ({FilterData}) => {
     const onSubmit = (values, onSubmitProps) => {

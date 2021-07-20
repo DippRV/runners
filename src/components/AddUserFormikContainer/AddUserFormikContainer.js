@@ -1,10 +1,10 @@
 import React from 'react';
 import {Formik, Form} from 'formik'
-import GetEmptyUserData from "../Validation/User/GetEmptyUserData";
-import UserSchema from "../Validation/User/UserSchema";
-import GetRuFormatOfDate from "../ReformatFunctions/GetRuFormatOfDate";
-import GetFormatOfPhone from "../ReformatFunctions/GetFormatOfPhone";
-import FormikControl from "./FormikControl";
+import GetEmptyUserData from "./GetEmptyUserData";
+import UserSchema from "./UserSchema";
+import GetRuFormatOfDate from "../../ReformatFunctions/GetRuFormatOfDate";
+import GetFormatOfPhone from "../../ReformatFunctions/GetFormatOfPhone";
+import FormikControl from "../form/FormikControl";
 
 const AddUserFormikContainer = (props) => {
     const initialValues = GetEmptyUserData();

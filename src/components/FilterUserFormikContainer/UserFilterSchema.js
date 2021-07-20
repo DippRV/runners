@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import 'yup-phone';
 
 const UserFilterSchema = Yup.object({
     startData: Yup.string()
@@ -12,7 +11,7 @@ const UserFilterSchema = Yup.object({
     endPayment: Yup.number()
         .integer('Enter an integer number')
         .positive('Enter a positive number'),
-    distances: Yup.array()
+    distances: Yup.array().min(1, 'xxx')
 });
 
 export default UserFilterSchema;

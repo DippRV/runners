@@ -1,6 +1,6 @@
 import React from 'react';
 import {ErrorMessage, Field} from 'formik';
-import TextError from "../../Validation/TextError/TextError";
+import TextError from "../TextError/TextError";
 import InputMask from "react-input-mask";
 
 const InputWithMask = ({name, label, ...rest}) => {
