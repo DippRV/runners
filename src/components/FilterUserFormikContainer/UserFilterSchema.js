@@ -11,7 +11,7 @@ const UserFilterSchema = Yup.object({
     endPayment: Yup.number()
         .integer('Enter an integer number')
         .positive('Enter a positive number'),
-    distances: Yup.array().min(1, 'xxx')
+    distances: Yup.array()
 });
 
 export default UserFilterSchema;

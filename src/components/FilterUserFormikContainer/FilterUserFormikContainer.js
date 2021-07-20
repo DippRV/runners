@@ -1,7 +1,6 @@
 import {Formik, Form} from 'formik';
 import GetEmptyUserFilterData from "./GetEmptyUserFilterData";
 import UserFilterSchema from "./UserFilterSchema";
-import './FilterForm.scss'
 import GetRuFormatOfDate from "../../ReformatFunctions/GetRuFormatOfDate";
 import FormikControl from "../form/FormikControl";
 import React from "react";
@@ -10,9 +9,9 @@ const FilterUserFormikContainer = (props) => {
     const initialValues = GetEmptyUserFilterData();
     const validationSchema = UserFilterSchema;
     const distanceOptions = [
-        {key: '3 km', value: 3},
-        {key: '5 km', value: 5},
-        {key: '10 km', value: 10}
+        {key: '3 km', value: '3'},
+        {key: '5 km', value: '5'},
+        {key: '10 km', value: '10'}
     ];
     const onSubmit = (values, onSubmitProps) => {
         if (props.FilterData(values)) {
@@ -50,8 +49,8 @@ const FilterUserFormikContainer = (props) => {
                                 <div className='col-4'>
                                     <FormikControl label='Maximum payment' name='endPayment' type='number' control='input'/>
                                 </div>
-                                <div className={'form-group col-4 divBtnFilter'}>
-                                    <button type="submit" disabled={!(formik.isValid && formik.dirty)} className={'btn btn-primary btnFilter'}>Filter data</button>
+                                <div style={{display: 'flex', alignItems: 'flex-end'}} className={'form-group col-4'}>
+                                    <button type="submit" disabled={!(formik.isValid && formik.dirty)} className={'btn btn-primary'}>Filter data</button>
                                 </div>
                             </div>
                         </Form>

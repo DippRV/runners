@@ -1,27 +1,31 @@
 import React from 'react';
 import {ErrorMessage, Field} from "formik";
 import TextError from "../../TextError/TextError";
-import '../../FilterUserFormikContainer/FilterForm.scss'
+import './CheckboxGroup.scss'
+
 
 const CheckboxGroup = ({name, label, options, ...rest}) => {
+
     return (
-        <div className='form-group checkboxes'>
+        <div className='form-group' >
             <label>{label}</label>
-            <Field name={name} {...rest}>
-                {
-                    ({field}) => {
-                        return options.map(option => {
-                            return (
-                                <React.Fragment key={option.key}>
-                                    <input type='checkbox' className={'distanceCheckbox'} id={option.value} {...field} value={option.value}
-                                           checked={field.value.includes(option.value)}/>
-                                    <label className={'form-check-label'} htmlFor={option.value}>{option.key}</label>
-                                </React.Fragment>
-                            );
-                        });
+            <div className='checkboxes'>
+                <Field name={name} {...rest}>
+                    {
+                        ({field}) => {
+                            return options.map(option => {
+                                return (
+                                    <React.Fragment key={option.key}>
+                                        <input type='checkbox' className={'distanceCheckbox'} id={option.value} {...field} value={option.value}
+                                               checked={field.value && field.value.includes(option.value)}/>
+                                        <label className={'form-check-label'} htmlFor={option.value}>{option.key}</label>
+                                    </React.Fragment>
+                                );
+                            });
+                        }
                     }
-                }
-            </Field>
+                </Field>
+            </div>
             <ErrorMessage name={name} component={TextError} />
         </div>
     );

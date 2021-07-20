@@ -35,7 +35,7 @@ const AddUserFormikContainer = (props) => {
             {
                 (formik) => {
                     return (
-                        <Form {...props}>
+                        <Form>
                             <legend>Contact info:</legend>
                             <div className='row'>
                                 <div className={'col'}>

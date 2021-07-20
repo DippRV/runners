@@ -11,7 +11,6 @@ const InputWithMask = ({name, label, ...rest}) => {
                 {
                     props => {
                         const {field} = props;
-                        console.log(props);
                         return (
                             <InputMask id={name} className={"form-control"} {...rest}
                                        value='' {...field} />
