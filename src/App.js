@@ -16,6 +16,14 @@ function App() {
     const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
     const displayUsers = filteredUsers.slice(pagesVisited, pagesVisited + usersPerPage);
 
+    const FilterActions = {
+        FilterDistance: 'FilterDistance',
+        FilterStartPayment: 'FilterStartPayment',
+        FilterEndPayment: 'FilterEndPayment',
+        FilterStartData: 'FilterStartData',
+        FilterEndData: 'FilterEndData'
+    };
+
     useEffect(() => {
         axios.get(apiUrl).then((resp) => {
             setUsers(() => [...resp.data]);
@@ -37,17 +45,46 @@ function App() {
     }
 
     const FilterData = (values) => {
-        const {startData, endData, startPayment, endPayment, distances} = values;
-        if (distances.length > 0) {
-            setFilteredUsers(prev => {
-                return Users.filter(user => {
-                    console.log(user.distance);
-                    console.log(distances);
-                    return distances.includes(user.distance.toString());
-                })
-            })
+
+        let {startData, endData, startPayment, endPayment, distances} = values;
+        startPayment = parseInt(startPayment);
+        endPayment = parseInt(endPayment);
+        let filterActions = [];
+
+        filterActions.push((distances.length > 0) ? FilterActions.FilterDistance : null);
+        filterActions.push(!isNaN(startPayment) ? FilterActions.FilterStartPayment : null);
+        filterActions.push(!isNaN(endPayment) ? FilterActions.FilterEndPayment : null);
+
+        setFilteredUsers(prev => [...Users]);
+
+        for (let i=0; i <filterActions.length; i++) {
+            switch (filterActions[i]) {
+                case FilterActions.FilterDistance:
+                    setFilteredUsers(prev => {
+                        return prev.filter(user => {
+                            return distances.includes(user.distance.toString());
+                        })
+                    })
+                    break;
+                case FilterActions.FilterStartPayment:
+                    setFilteredUsers(prev => {
+                                return prev.filter(user => {
+                                    return user.payment >= startPayment;
+                                })
+                            })
+                    break;
+                case FilterActions.FilterEndPayment:
+                    setFilteredUsers(prev => {
+                            return prev.filter(user => {
+                                return user.payment <= endPayment;
+                        })
+                    })
+                    break;
+                default:
+                    break;
+
+            }
         }
-        console.log(startData, endData, startPayment, endPayment);
 
         // if (isNaN(startPayment)) {
         //     setFilteredUsers(prev => {
