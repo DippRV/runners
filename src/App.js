@@ -5,21 +5,21 @@ import UserTablePagination from './components/UserTablePagination/UserTablePagin
 import AddUserFormikContainer from "./components/AddUserFormikContainer/AddUserFormikContainer";
 import FilterUserFormikContainer from "./components/FilterUserFormikContainer/FilterUserFormikContainer";
 
-
-
 const apiUrl = 'http://localhost:3000/users';
 
 function App() {
     const [Users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
     const usersPerPage = 5;
     const pagesVisited = pageNumber*usersPerPage;
-    const pageCount = Math.ceil(Users.length / usersPerPage);
-    const displayUsers = Users.slice(pagesVisited, pagesVisited + usersPerPage);
+    const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
+    const displayUsers = filteredUsers.slice(pagesVisited, pagesVisited + usersPerPage);
 
     useEffect(() => {
         axios.get(apiUrl).then((resp) => {
             setUsers(() => [...resp.data]);
+            setFilteredUsers(() => [...resp.data]);
         });
     }, []);
 
@@ -28,6 +28,7 @@ function App() {
     const AddUser = (values) => {
         const result = axios.post(apiUrl, values).then(resp => {
            setUsers(prev => [...prev, resp.data]);
+           setFilteredUsers(prev => [...prev, resp.data]);
            return true;
         }).catch(error=>{
             return false;
@@ -36,7 +37,30 @@ function App() {
     }
 
     const FilterData = (values) => {
-        return 0;
+        const {startData, endData, startPayment, endPayment, distances} = values;
+        if (distances.length > 0) {
+            setFilteredUsers(prev => {
+                return Users.filter(user => {
+                    console.log(user.distance);
+                    console.log(distances);
+                    return distances.includes(user.distance.toString());
+                })
+            })
+        }
+        console.log(startData, endData, startPayment, endPayment);
+
+        // if (isNaN(startPayment)) {
+        //     setFilteredUsers(prev => {
+        //         return Users.filter(user => {
+        //             console.log(user.distance);
+        //             console.log(distances);
+        //             return distances.includes(user.distance.toString());
+        //         })
+        //     })
+        // }
+        //const  = parseInt(x, base);
+        // if (isNaN(parsed)) { return 0; }
+        // return parsed * 100;
     }
 
     const changePage = ({selected}) => {

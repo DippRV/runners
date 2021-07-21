@@ -9,9 +9,9 @@ const FilterUserFormikContainer = (props) => {
     const initialValues = GetEmptyUserFilterData();
     const validationSchema = UserFilterSchema;
     const distanceOptions = [
-        {key: '3 km', value: '3'},
-        {key: '5 km', value: '5'},
-        {key: '10 km', value: '10'}
+        {key: '3 km', value: 3},
+        {key: '5 km', value: 5},
+        {key: '10 km', value: 10}
     ];
     const onSubmit = (values, onSubmitProps) => {
         if (props.FilterData(values)) {

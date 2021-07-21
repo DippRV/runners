@@ -17,7 +17,7 @@ const CheckboxGroup = ({name, label, options, ...rest}) => {
                                 return (
                                     <React.Fragment key={option.key}>
                                         <input type='checkbox' className={'distanceCheckbox'} id={option.value} {...field} value={option.value}
-                                               checked={field.value && field.value.includes(option.value)}/>
+                                               checked={field.value && field.value.includes(option.value.toString())}/>
                                         <label className={'form-check-label'} htmlFor={option.value}>{option.key}</label>
                                     </React.Fragment>
                                 );

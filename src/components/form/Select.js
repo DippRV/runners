@@ -2,7 +2,7 @@ import React from 'react';
 import {ErrorMessage, Field} from "formik";
 import TextError from "../TextError/TextError";
 
-const Select = ({name, label, options, ...rest}) => {
+const Select = ({name, label, options, typeOption, ...rest}) => {
     return (
         <div className="form-group">
             <label htmlFor={name}>{label}</label>

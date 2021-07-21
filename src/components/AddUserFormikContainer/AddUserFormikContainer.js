@@ -11,7 +11,7 @@ const AddUserFormikContainer = (props) => {
     const validationSchema = UserSchema;
     const distanceOptions = [
         {key: '', value: 0},
-        {key: '3 km', value: 2},
+        {key: '3 km', value: 3},
         {key: '5 km', value: 5},
         {key: '10 km', value: 10}
     ];
