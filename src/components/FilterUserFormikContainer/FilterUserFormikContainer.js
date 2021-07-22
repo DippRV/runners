@@ -1,62 +1,73 @@
-import {Formik, Form} from 'formik';
-import GetEmptyUserFilterData from "./GetEmptyUserFilterData";
-import UserFilterSchema from "./UserFilterSchema";
-import GetRuFormatOfDate from "../../ReformatFunctions/GetRuFormatOfDate";
-import FormikControl from "../form/FormikControl";
-import React from "react";
+import React from 'react';
+import FilterUserFormik from "./FilterUserFormik/FilterUserFormik";
+import GetStandartFormatOfDate from "../../ReformatFunctions/GetStandartFormatOfDate";
 
-const FilterUserFormikContainer = (props) => {
-    const initialValues = GetEmptyUserFilterData();
-    const validationSchema = UserFilterSchema;
-    const distanceOptions = [
-        {key: '3 km', value: 3},
-        {key: '5 km', value: 5},
-        {key: '10 km', value: 10}
-    ];
-    const onSubmit = (values, onSubmitProps) => {
-        if (props.FilterData(values)) {
-            alert("Data is filtered");
-        } else {
-            alert("Server error");
+const FilterUserFormikContainer = ({handleFilteredUsers, ResetFilter, getUsers}) => {
+
+    const FilterData = (values) => {
+
+        const FilterActions = {
+            FilterDistance: 'FilterDistance',
+            FilterStartPayment: 'FilterStartPayment',
+            FilterEndPayment: 'FilterEndPayment',
+            FilterStartDate: 'FilterStartDate',
+            FilterEndDate: 'FilterEndDate'
+        };
+
+        let {startDate, endDate, startPayment, endPayment, distances} = values;
+        startPayment = parseInt(startPayment);
+        endPayment = parseInt(endPayment);
+        startDate =  Date.parse(startDate);
+        endDate= Date.parse(endDate);
+
+        let filterActions = [];
+
+        filterActions.push((distances.length > 0) ? FilterActions.FilterDistance : null);
+        filterActions.push(!isNaN(startPayment) ? FilterActions.FilterStartPayment : null);
+        filterActions.push(!isNaN(endPayment) ? FilterActions.FilterEndPayment : null);
+        filterActions.push(!isNaN(startDate) ? FilterActions.FilterStartDate : null);
+        filterActions.push(!isNaN(endDate) ? FilterActions.FilterEndDate : null);
+
+        let arrForFiltered = getUsers();
+
+        for (let i=0; i <filterActions.length; i++) {
+            switch (filterActions[i]) {
+                case FilterActions.FilterDistance:
+                    arrForFiltered = arrForFiltered.filter(user => {
+                        return distances.includes(user.distance.toString());
+
+                    })
+                    break;
+                case FilterActions.FilterStartPayment:
+                    arrForFiltered = arrForFiltered.filter(user => {
+                        return user.payment >= startPayment;
+                    })
+                    break;
+                case FilterActions.FilterEndPayment:
+                    arrForFiltered = arrForFiltered.filter(user => {
+                        return user.payment <= endPayment;
+                    })
+                    break;
+                case FilterActions.FilterStartDate:
+                    arrForFiltered = arrForFiltered.filter(user => {
+                        return Date.parse(GetStandartFormatOfDate(user.date)) >= startDate;
+                    })
+                    break;
+                case FilterActions.FilterEndDate:
+                    arrForFiltered = arrForFiltered.filter(user => {
+                        return  Date.parse(GetStandartFormatOfDate(user.date)) <=  endDate;
+                    })
+                    break;
+                default:
+                    break;
+
+            }
         }
-        onSubmitProps.setSubmitting(false);
+        handleFilteredUsers(arrForFiltered);
     }
+
     return (
-        <Formik initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-        >
-            {
-                (formik) => {
-                    return (
-                        <Form className='mt-3'>
-                            <legend>Filters:</legend>
-                            <div className={'row'}>
-                                <div className='col-4'>
-                                    <FormikControl name='startData' label='Earliest date' type='date' control='input'/>
-                                </div>
-                                <div className='col-4'>
-                                    <FormikControl name='endData' label='Latest date' type='date' control='input' />
-                                </div>
-                                <div className='col-4'>
-                                    <FormikControl control='checkbox' label='Distance' options={distanceOptions} name='distances'/>
-                                </div>
-                            </div>
-                            <div className={'row mt-4'}>
-                                <div className='col-4'>
-                                    <FormikControl label='Minimum payment' name='startPayment' type='number' control='input'/>
-                                </div>
-                                <div className='col-4'>
-                                    <FormikControl label='Maximum payment' name='endPayment' type='number' control='input'/>
-                                </div>
-                                <div style={{display: 'flex', alignItems: 'flex-end'}} className={'form-group col-4'}>
-                                    <button type="submit" disabled={!(formik.isValid && formik.dirty)} className={'btn btn-primary'}>Filter data</button>
-                                </div>
-                            </div>
-                        </Form>
-                    );
-                }}
-        </Formik>
+        <FilterUserFormik FilterData={FilterData} ResetFilter={ResetFilter} />
     );
 };
 

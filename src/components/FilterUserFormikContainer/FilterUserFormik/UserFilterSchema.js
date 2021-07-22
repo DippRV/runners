@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 
 const UserFilterSchema = Yup.object({
-    startData: Yup.string()
+    startDate: Yup.string()
         .matches(/^\d{4}\-\d{1,2}\-\d{1,2}$/, 'Invalid date format'),
-    endData: Yup.string()
+    endDate: Yup.string()
         .matches(/^\d{4}\-\d{1,2}\-\d{1,2}$/, 'Invalid date format'),
     startPayment: Yup.number()
         .integer('Enter an integer number')

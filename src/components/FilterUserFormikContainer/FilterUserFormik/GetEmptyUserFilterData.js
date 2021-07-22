@@ -1,7 +1,7 @@
 const GetEmptyUserFilterData = () =>  {
     return {
-        startData: '',
-        endData: '',
+        startDate: '',
+        endDate: '',
         startPayment: '',
         endPayment: '',
         distances: []

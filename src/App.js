@@ -2,10 +2,9 @@ import UserTable from "./components/UserTable/UserTable";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import UserTablePagination from './components/UserTablePagination/UserTablePagination';
+import ApiUrls from "./config/ApiUrls";
 import AddUserFormikContainer from "./components/AddUserFormikContainer/AddUserFormikContainer";
 import FilterUserFormikContainer from "./components/FilterUserFormikContainer/FilterUserFormikContainer";
-
-const apiUrl = 'http://localhost:3000/users';
 
 function App() {
     const [Users, setUsers] = useState([]);
@@ -16,88 +15,30 @@ function App() {
     const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
     const displayUsers = filteredUsers.slice(pagesVisited, pagesVisited + usersPerPage);
 
-    const FilterActions = {
-        FilterDistance: 'FilterDistance',
-        FilterStartPayment: 'FilterStartPayment',
-        FilterEndPayment: 'FilterEndPayment',
-        FilterStartData: 'FilterStartData',
-        FilterEndData: 'FilterEndData'
-    };
 
     useEffect(() => {
-        axios.get(apiUrl).then((resp) => {
+        axios.get(ApiUrls.API_URL_USERS).then((resp) => {
             setUsers(() => [...resp.data]);
             setFilteredUsers(() => [...resp.data]);
         });
     }, []);
 
 
-
-    const AddUser = (values) => {
-        const result = axios.post(apiUrl, values).then(resp => {
-           setUsers(prev => [...prev, resp.data]);
-           setFilteredUsers(prev => [...prev, resp.data]);
-           return true;
-        }).catch(error=>{
-            return false;
-        });
-        return result;
+    const getUsers = () => {
+        return [...Users];
     }
 
-    const FilterData = (values) => {
+    const handleNewUser = (newUser) => {
+        setUsers(prev => [...prev, newUser]);
+        setFilteredUsers(prev => [...prev, newUser]);
+    }
 
-        let {startData, endData, startPayment, endPayment, distances} = values;
-        startPayment = parseInt(startPayment);
-        endPayment = parseInt(endPayment);
-        let filterActions = [];
+    const handleFilteredUsers = (usersArray) => {
+        setFilteredUsers(prev => [...usersArray]);
+    }
 
-        filterActions.push((distances.length > 0) ? FilterActions.FilterDistance : null);
-        filterActions.push(!isNaN(startPayment) ? FilterActions.FilterStartPayment : null);
-        filterActions.push(!isNaN(endPayment) ? FilterActions.FilterEndPayment : null);
-
+    const ResetFilter = () => {
         setFilteredUsers(prev => [...Users]);
-
-        for (let i=0; i <filterActions.length; i++) {
-            switch (filterActions[i]) {
-                case FilterActions.FilterDistance:
-                    setFilteredUsers(prev => {
-                        return prev.filter(user => {
-                            return distances.includes(user.distance.toString());
-                        })
-                    })
-                    break;
-                case FilterActions.FilterStartPayment:
-                    setFilteredUsers(prev => {
-                                return prev.filter(user => {
-                                    return user.payment >= startPayment;
-                                })
-                            })
-                    break;
-                case FilterActions.FilterEndPayment:
-                    setFilteredUsers(prev => {
-                            return prev.filter(user => {
-                                return user.payment <= endPayment;
-                        })
-                    })
-                    break;
-                default:
-                    break;
-
-            }
-        }
-
-        // if (isNaN(startPayment)) {
-        //     setFilteredUsers(prev => {
-        //         return Users.filter(user => {
-        //             console.log(user.distance);
-        //             console.log(distances);
-        //             return distances.includes(user.distance.toString());
-        //         })
-        //     })
-        // }
-        //const  = parseInt(x, base);
-        // if (isNaN(parsed)) { return 0; }
-        // return parsed * 100;
     }
 
     const changePage = ({selected}) => {
@@ -106,8 +47,8 @@ function App() {
 
     return (
         <div className="container">
-            <AddUserFormikContainer AddUser={AddUser} />
-            <FilterUserFormikContainer FilterData={FilterData}/>
+            <AddUserFormikContainer handleNewUser={handleNewUser} />
+            <FilterUserFormikContainer handleFilteredUsers={handleFilteredUsers} getUsers={getUsers} ResetFilter={ResetFilter}/>
             <UserTable Users={displayUsers} />
             <UserTablePagination changePage={changePage} pageCount={pageCount}/>
         </div>
