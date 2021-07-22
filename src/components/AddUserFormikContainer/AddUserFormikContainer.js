@@ -1,17 +1,16 @@
 import React from 'react';
 import AddUserFormik from "./AddUserFormik/AddUserFormik";
-import axios from "axios";
-import ApiUrls from "../../config/ApiUrls";
+import DAL from "../../DAL/Users";
 
 const AddUserFormikContainer = ({handleNewUser}) => {
-    const AddUser = (values) => {
-        const result = axios.post(ApiUrls.API_URL_USERS, values).then(resp => {
-            handleNewUser(resp.data);
-            return true;
-        }).catch(error=>{
-            return false;
-        });
-        return result;
+    const AddUser = async (values) => {
+        const result = await DAL.addUser(values);
+        let status = false;
+        if (result) {
+            handleNewUser(result);
+            status = true;
+        }
+        return status;
     }
 
     return (

@@ -15,14 +15,17 @@ const AddUserFormik = (props) => {
         {key: '5 km', value: 5},
         {key: '10 km', value: 10}
     ];
-    const onSubmit = (values, onSubmitProps) => {
+    const onSubmit = async (values, onSubmitProps) => {
         const date = GetRuFormatOfDate(values.date);
         const phone = GetFormatOfPhone(values.phone);
         const updatedValues = {...values, date, phone};
-        if (props.AddUser(updatedValues)) {
+        const status = await props.AddUser(updatedValues);
+        if (status)
+        {
             onSubmitProps.resetForm();
             alert("Data added");
-        } else {
+        }
+        else {
             alert("Server error");
         }
         onSubmitProps.setSubmitting(false);
@@ -71,7 +74,7 @@ const AddUserFormik = (props) => {
                                 </div>
                             </div>
 
-                            <div className="form-group mt-3">
+                            <div className="form-group mt-4">
                                 <button type="submit" className="btn btn-primary" disabled={!(formik.isValid && formik.dirty)}>Add user</button>
                             </div>
                         </Form>

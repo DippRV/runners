@@ -1,10 +1,9 @@
 import UserTable from "./components/UserTable/UserTable";
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import UserTablePagination from './components/UserTablePagination/UserTablePagination';
-import ApiUrls from "./config/ApiUrls";
 import AddUserFormikContainer from "./components/AddUserFormikContainer/AddUserFormikContainer";
 import FilterUserFormikContainer from "./components/FilterUserFormikContainer/FilterUserFormikContainer";
+import DAL from './DAL/Users'
 
 function App() {
     const [Users, setUsers] = useState([]);
@@ -16,11 +15,12 @@ function App() {
     const displayUsers = filteredUsers.slice(pagesVisited, pagesVisited + usersPerPage);
 
 
-    useEffect(() => {
-        axios.get(ApiUrls.API_URL_USERS).then((resp) => {
-            setUsers(() => [...resp.data]);
-            setFilteredUsers(() => [...resp.data]);
-        });
+    useEffect(async () => {
+        const baseUsers = await DAL.getUsers();
+        if (baseUsers) {
+            setUsers(prev => [...baseUsers]);
+            setFilteredUsers(prev => [...baseUsers]);
+        }
     }, []);
 
 
