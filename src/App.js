@@ -10,6 +10,7 @@ function App() {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
     const usersPerPage = 5;
+    const startPage = 0;
     const pagesVisited = pageNumber*usersPerPage;
     const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
     const displayUsers = filteredUsers.slice(pagesVisited, pagesVisited + usersPerPage);
@@ -35,6 +36,7 @@ function App() {
 
     const handleFilteredUsers = (usersArray) => {
         setFilteredUsers(prev => [...usersArray]);
+        setPageNumber(prev => startPage);
     }
 
     const ResetFilter = () => {
@@ -42,6 +44,7 @@ function App() {
     }
 
     const changePage = ({selected}) => {
+        console.log(selected);
         setPageNumber(selected);
     }
 

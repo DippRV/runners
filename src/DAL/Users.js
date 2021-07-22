@@ -2,16 +2,16 @@ import ApiUrls from "../config/ApiUrls";
 import axios from "axios";
 
 const DAL = {
-    getUsers: () => {
-        const result = axios.get(ApiUrls.API_URL_USERS).then((resp) => {
+    getUsers: async () => {
+        const result = await axios.get(ApiUrls.API_URL_USERS).then((resp) => {
             return resp.data;
         }).catch((e) => {
             return null;
         });
         return result;
     },
-    addUser: (values) => {
-        const result = axios.post(ApiUrls.API_URL_USERS, values).then(resp => {
+    addUser: async (values) => {
+        const result = await axios.post(ApiUrls.API_URL_USERS, values).then(resp => {
             return resp.data;
         }).catch(error => {
             return null;
