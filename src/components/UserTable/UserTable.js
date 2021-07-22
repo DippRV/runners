@@ -1,9 +1,11 @@
 import './UserTable.scss';
+import {useUserTableContext} from "../UsersTableContextProvider";
 
-const UserTable = ({Users}) => {
+const UserTable = () => {
+    const {Users} = useUserTableContext();
     return (
         <div className={'tableContainer'}>
-            <table className="col-md-7 table table-primary table-striped table-bordered mt-5">
+            <table className="col-md-7 table table-primary table-striped mt-5">
                 <thead className="thead-dark">
                 <tr>
                     <th scope="col">Id</th>

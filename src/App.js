@@ -1,59 +1,23 @@
 import UserTable from "./components/UserTable/UserTable";
-import React, {useState, useEffect} from "react";
+import React from "react";
 import UserTablePagination from './components/UserTablePagination/UserTablePagination';
 import AddUserFormikContainer from "./components/AddUserFormikContainer/AddUserFormikContainer";
 import FilterUserFormikContainer from "./components/FilterUserFormikContainer/FilterUserFormikContainer";
-import DAL from './DAL/Users'
+import {UsersContextProvider} from "./components/UsersContextProvider";
+import {UserTableContextProvider} from './components/UsersTableContextProvider'
 
 function App() {
-    const [Users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const [pageNumber, setPageNumber] = useState(0);
-    const usersPerPage = 5;
-    const startPage = 0;
-    const pagesVisited = pageNumber*usersPerPage;
-    const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
-    const displayUsers = filteredUsers.slice(pagesVisited, pagesVisited + usersPerPage);
-
-
-    useEffect(async () => {
-        const baseUsers = await DAL.getUsers();
-        if (baseUsers) {
-            setUsers(prev => [...baseUsers]);
-            setFilteredUsers(prev => [...baseUsers]);
-        }
-    }, []);
-
-
-    const getUsers = () => {
-        return [...Users];
-    }
-
-    const handleNewUser = (newUser) => {
-        setUsers(prev => [...prev, newUser]);
-        setFilteredUsers(prev => [...prev, newUser]);
-    }
-
-    const handleFilteredUsers = (usersArray) => {
-        setFilteredUsers(prev => [...usersArray]);
-        setPageNumber(prev => startPage);
-    }
-
-    const ResetFilter = () => {
-        setFilteredUsers(prev => [...Users]);
-    }
-
-    const changePage = ({selected}) => {
-        console.log(selected);
-        setPageNumber(selected);
-    }
 
     return (
         <div className="container">
-            <AddUserFormikContainer handleNewUser={handleNewUser} />
-            <FilterUserFormikContainer handleFilteredUsers={handleFilteredUsers} getUsers={getUsers} ResetFilter={ResetFilter}/>
-            <UserTable Users={displayUsers} />
-            <UserTablePagination changePage={changePage} pageCount={pageCount}/>
+            <UsersContextProvider>
+                <UserTableContextProvider>
+                    <AddUserFormikContainer/>
+                    <FilterUserFormikContainer/>
+                    <UserTable/>
+                    <UserTablePagination/>
+                </UserTableContextProvider>
+            </UsersContextProvider>
         </div>
     );
 }

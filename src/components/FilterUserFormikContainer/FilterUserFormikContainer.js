@@ -1,10 +1,15 @@
 import React from 'react';
 import FilterUserFormik from "./FilterUserFormik/FilterUserFormik";
 import GetStandartFormatOfDate from "../../ReformatFunctions/GetStandartFormatOfDate";
+import {useUserContext} from "../UsersContextProvider";
+import {useUserTableContext} from "../UsersTableContextProvider";
 
-const FilterUserFormikContainer = ({handleFilteredUsers, ResetFilter, getUsers}) => {
+const FilterUserFormikContainer = () => {
 
+    const {handleFilteredUsers, ResetFilteredUsers, Users } = useUserContext();
+    const {setPageNumber, startPage} = useUserTableContext();
     const FilterData = (values) => {
+
 
         const FilterActions = {
             FilterDistance: 'FilterDistance',
@@ -28,7 +33,7 @@ const FilterUserFormikContainer = ({handleFilteredUsers, ResetFilter, getUsers})
         filterActions.push(!isNaN(startDate) ? FilterActions.FilterStartDate : null);
         filterActions.push(!isNaN(endDate) ? FilterActions.FilterEndDate : null);
 
-        let arrForFiltered = getUsers();
+        let arrForFiltered = [...Users];
 
         for (let i=0; i <filterActions.length; i++) {
             switch (filterActions[i]) {
@@ -64,10 +69,11 @@ const FilterUserFormikContainer = ({handleFilteredUsers, ResetFilter, getUsers})
             }
         }
         handleFilteredUsers(arrForFiltered);
+        setPageNumber(startPage);
     }
 
     return (
-        <FilterUserFormik FilterData={FilterData} ResetFilter={ResetFilter} />
+        <FilterUserFormik FilterData={FilterData} ResetFilteredUsers={ResetFilteredUsers} />
     );
 };
 

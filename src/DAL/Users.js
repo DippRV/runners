@@ -1,4 +1,4 @@
-import ApiUrls from "../config/ApiUrls";
+import ApiUrls from "./ApiUrls";
 import axios from "axios";
 
 const DAL = {

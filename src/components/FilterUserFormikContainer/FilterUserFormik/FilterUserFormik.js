@@ -4,7 +4,7 @@ import UserFilterSchema from "./UserFilterSchema";
 import FormikControl from "../../form/FormikControl";
 import React from "react";
 
-const FilterUserFormik = (props) => {
+const FilterUserFormik = ({FilterData, ResetFilteredUsers}) => {
     const initialValues = GetEmptyUserFilterData();
     const validationSchema = UserFilterSchema;
     const distanceOptions = [
@@ -13,7 +13,7 @@ const FilterUserFormik = (props) => {
         {key: '10 km', value: 10}
     ];
     const onSubmit = (values, onSubmitProps) => {
-        if (props.FilterData(values)) {
+        if (FilterData(values)) {
             alert("Data is filtered");
         } else {
             alert("Server error");
@@ -21,7 +21,7 @@ const FilterUserFormik = (props) => {
         onSubmitProps.setSubmitting(false);
     }
     const handleReset = (resetForm) => {
-        props.ResetFilter();
+        ResetFilteredUsers();
         resetForm();
     }
     return (

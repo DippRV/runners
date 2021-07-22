@@ -1,6 +1,8 @@
 import ReactPaginate from 'react-paginate';
+import {useUserTableContext} from "../UsersTableContextProvider";
 
-const UserTablePagination = ({changePage, pageCount}) => {
+const UserTablePagination = () => {
+    const {changePage, pageCount} = useUserTableContext()
     return (
         <ReactPaginate
         previousLabel={'Previous'}
